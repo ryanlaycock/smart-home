@@ -1,0 +1,45 @@
+body {
+    background-color: dimgray;
+    width: 480px;
+    height: 320px;
+    border: black 100px;
+
+    color: white;
+    margin: 0;
+
+    font-family: Arial, serif;
+    font-weight: bold;
+}
+
+p {
+    font-size: 30px;
+}
+
+h2 {
+    font-size: 40px;
+}
+
+#temps {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center
+}
+
+.temp{
+    padding: 10px;
+    text-align: center;
+    width: 200px;
+}
+
+#footer {
+    width: 100%;
+    height: 50px;
+    flex-shrink: 0;
+}
+
+#time {
+    bottom: 5px;
+    right: 5px;
+    position: absolute;
+}

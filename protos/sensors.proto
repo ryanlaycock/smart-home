@@ -1,0 +1,16 @@
+syntax = "proto3";
+package sensors;
+
+option go_package = "github.com/ryanlaycock/smart-home/smart-home-api/protos/sensors";
+
+message Reading {
+    double value = 1;
+}
+
+message TempSensor {
+    string sensorId = 1;
+}
+
+service Sensor {
+    rpc ReadTemp(TempSensor) returns (Reading) {}
+}
