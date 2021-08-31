@@ -2,16 +2,16 @@ import grpc
 import logging
 from concurrent.futures import ThreadPoolExecutor
 
-# python -m grpc_tools.protoc -I../ --python_out=. --grpc_python_out=. ../protos/sensors.proto
 from protos import sensors_pb2_grpc, sensors_pb2
 import temperature_sensor
 
 
 class SensorServer(sensors_pb2_grpc.SensorServicer):
-    def Read(self, request, context):
-        logging.info('Read sensor request received')
-        temp = temperature_sensor.read_temp(context)
-        reading = sensors_pb2.Reading(temp)
+    def ReadTemp(self, request, context):
+        sensorId = request.sensorId
+        logging.info('Read temp sensor request received for %s', sensorId)
+        temp = temperature_sensor.read_temp(context, sensorId)
+        reading = sensors_pb2.Reading(value=temp)
 
         return reading
 
@@ -27,6 +27,10 @@ if __name__ == '__main__':
     server.add_insecure_port(f'[::]:{port}')
 
     server.start()
-    logging.info('Temperature Sensor Server ready on port %r', port)
+    logging.info('Sensor Server ready on port %r', port)
+
+    for sensor_id in temperature_sensor.device_folders:
+        logging.info('Found temperature sensor: %s', sensor_id)
+
     server.wait_for_termination()
-    logging.info('Temperature Sensor Shutdown')
+    logging.info('Sensor Server shutdown')

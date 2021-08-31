@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SensorClient interface {
-	Read(ctx context.Context, in *ReadParams, opts ...grpc.CallOption) (*Reading, error)
+	ReadTemp(ctx context.Context, in *TempSensor, opts ...grpc.CallOption) (*Reading, error)
 }
 
 type sensorClient struct {
@@ -29,9 +29,9 @@ func NewSensorClient(cc grpc.ClientConnInterface) SensorClient {
 	return &sensorClient{cc}
 }
 
-func (c *sensorClient) Read(ctx context.Context, in *ReadParams, opts ...grpc.CallOption) (*Reading, error) {
+func (c *sensorClient) ReadTemp(ctx context.Context, in *TempSensor, opts ...grpc.CallOption) (*Reading, error) {
 	out := new(Reading)
-	err := c.cc.Invoke(ctx, "/sensors.Sensor/Read", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/sensors.Sensor/ReadTemp", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *sensorClient) Read(ctx context.Context, in *ReadParams, opts ...grpc.Ca
 // All implementations must embed UnimplementedSensorServer
 // for forward compatibility
 type SensorServer interface {
-	Read(context.Context, *ReadParams) (*Reading, error)
+	ReadTemp(context.Context, *TempSensor) (*Reading, error)
 	mustEmbedUnimplementedSensorServer()
 }
 
@@ -50,8 +50,8 @@ type SensorServer interface {
 type UnimplementedSensorServer struct {
 }
 
-func (UnimplementedSensorServer) Read(context.Context, *ReadParams) (*Reading, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Read not implemented")
+func (UnimplementedSensorServer) ReadTemp(context.Context, *TempSensor) (*Reading, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadTemp not implemented")
 }
 func (UnimplementedSensorServer) mustEmbedUnimplementedSensorServer() {}
 
@@ -66,20 +66,20 @@ func RegisterSensorServer(s grpc.ServiceRegistrar, srv SensorServer) {
 	s.RegisterService(&Sensor_ServiceDesc, srv)
 }
 
-func _Sensor_Read_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadParams)
+func _Sensor_ReadTemp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TempSensor)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SensorServer).Read(ctx, in)
+		return srv.(SensorServer).ReadTemp(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/sensors.Sensor/Read",
+		FullMethod: "/sensors.Sensor/ReadTemp",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SensorServer).Read(ctx, req.(*ReadParams))
+		return srv.(SensorServer).ReadTemp(ctx, req.(*TempSensor))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,8 +92,8 @@ var Sensor_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*SensorServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Read",
-			Handler:    _Sensor_Read_Handler,
+			MethodName: "ReadTemp",
+			Handler:    _Sensor_ReadTemp_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -1,10 +1,11 @@
 package main
 
 import (
-    "context"
-    "github.com/ryanlaycock/smart-home/smart-home-api/protos/github.com/ryanlaycock/smart-home/smart-home-api/protos/sensors"
-    "google.golang.org/grpc"
+    "github.com/gin-contrib/cors"
+    "github.com/gin-gonic/gin"
+    tempsensor "github.com/ryanlaycock/smart-home/smart-home-api/temp-sensor"
     "log"
+    "os"
 )
 
 type Reading struct {
@@ -12,18 +13,31 @@ type Reading struct {
 }
 
 func main() {
-    addr := "localhost:9999"
-    conn, err := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithBlock())
+    config, err := LoadConfig(os.Getenv("CONFIG_FILE"))
     if err != nil {
-         log.Fatal(err)
+        log.Fatal(err)
+        return
     }
-    defer conn.Close()
+    log.Printf("Loaded config: %+v", config)
 
-    sensorClient := sensors.NewSensorClient(conn)
-    reading, err := sensorClient.Read(context.Background(), &sensors.ReadParams{})
+    var tempSensors []*tempsensor.Tempsensor
+
+    for _, tempSensor := range config.TempSensors {
+        ts, err := tempsensor.New(tempSensor)
+        if err != nil {
+            log.Fatal(err)
+            return
+        }
+        log.Printf("Created temperature sensor %+v", ts.Cfg.Sensors)
+        tempSensors = append(tempSensors, ts)
+    }
+
+    router := gin.Default()
+    router.Use(cors.Default())
+    router.GET("/api/v1/sensors/temperatures", getAllTemperatures(tempSensors))
+
+    err = router.Run()
     if err != nil {
         log.Fatal(err)
     }
-
-    log.Println(reading.Value)
 }

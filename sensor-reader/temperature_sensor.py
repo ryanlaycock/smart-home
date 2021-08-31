@@ -19,15 +19,15 @@ def read_temp_raw(device_file):
     return lines
 
 
-def read_temp(context):
-    if len(device_folders) == 0:
+def read_temp(context, sensor_id):
+    if BASE_DIR + sensor_id not in device_folders:
         context.set_details('Cannot find sensor in devices directory')
-        context.set_code(grpc.StatusCode.INTERNAL)
+        context.set_code(grpc.StatusCode.NOT_FOUND)
         return 0
 
-    device_file = device_folders[0] + DEVICE_FOLDER_NAME
+    device_file = BASE_DIR + sensor_id + DEVICE_FOLDER_NAME
     lines = read_temp_raw(device_file)
-    logging.debug('Read device lines: %v', lines)
+    logging.debug('Read device lines: %s', lines)
 
     while lines[0].strip()[-3:] != 'YES':
         context.set_details('Sensor has no values')
@@ -40,7 +40,7 @@ def read_temp(context):
         if equals_pos != -1:
             temp_string = lines[1][equals_pos + 2:]
             temp_c = float(temp_string) / 1000.0
-            logging.info('Parsed temperature value to celsius: %v', temp_c)
+            logging.info('Parsed temperature value to celsius: %s', temp_c)
 
             return temp_c
 

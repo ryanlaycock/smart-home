@@ -7,8 +7,10 @@ message Reading {
     double value = 1;
 }
 
-message ReadParams {}
+message TempSensor {
+    string sensorId = 1;
+}
 
 service Sensor {
-    rpc Read(ReadParams) returns (Reading) {}
+    rpc ReadTemp(TempSensor) returns (Reading) {}
 }

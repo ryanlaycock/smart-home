@@ -14,9 +14,9 @@ class SensorStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Read = channel.unary_unary(
-                '/sensors.Sensor/Read',
-                request_serializer=protos_dot_sensors__pb2.ReadParams.SerializeToString,
+        self.ReadTemp = channel.unary_unary(
+                '/sensors.Sensor/ReadTemp',
+                request_serializer=protos_dot_sensors__pb2.TempSensor.SerializeToString,
                 response_deserializer=protos_dot_sensors__pb2.Reading.FromString,
                 )
 
@@ -24,7 +24,7 @@ class SensorStub(object):
 class SensorServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def Read(self, request, context):
+    def ReadTemp(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,9 +33,9 @@ class SensorServicer(object):
 
 def add_SensorServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Read': grpc.unary_unary_rpc_method_handler(
-                    servicer.Read,
-                    request_deserializer=protos_dot_sensors__pb2.ReadParams.FromString,
+            'ReadTemp': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReadTemp,
+                    request_deserializer=protos_dot_sensors__pb2.TempSensor.FromString,
                     response_serializer=protos_dot_sensors__pb2.Reading.SerializeToString,
             ),
     }
@@ -49,7 +49,7 @@ class Sensor(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Read(request,
+    def ReadTemp(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +59,8 @@ class Sensor(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/sensors.Sensor/Read',
-            protos_dot_sensors__pb2.ReadParams.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/sensors.Sensor/ReadTemp',
+            protos_dot_sensors__pb2.TempSensor.SerializeToString,
             protos_dot_sensors__pb2.Reading.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

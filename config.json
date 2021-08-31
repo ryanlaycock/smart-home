@@ -1,0 +1,18 @@
+{
+  "temp_sensors": [
+    {
+      "server_ip": "192.168.0.200",
+      "server_grpc_port": "9999",
+      "sensors": {
+        "downstairs_fish_tank": {
+          "sensor_id": "28-01201194d5a3",
+          "display_name": "Downstairs Fish Tank"
+        },
+        "office": {
+          "sensor_id": "28-012010a7468d",
+          "display_name": "Downstairs Office"
+        }
+      }
+    }
+  ]
+}

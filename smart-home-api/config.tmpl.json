@@ -1,0 +1,14 @@
+{
+  "temp_sensors": [
+    {
+      "server_ip": "<ip>",
+      "server_grpc_port": "<port>",
+      "sensors": {
+        "<name>": {
+          "sensor_id": "28-xxxxxxxxxxxx",
+          "display_name": "<name>"
+        },
+      }
+    }
+  ]
+}

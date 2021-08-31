@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z?github.com/ryanlaycock/smart-home/smart-home-api/protos/sensors',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x14protos/sensors.proto\x12\x07sensors\"\x18\n\x07Reading\x12\r\n\x05value\x18\x01 \x01(\x01\"\x0c\n\nReadParams29\n\x06Sensor\x12/\n\x04Read\x12\x13.sensors.ReadParams\x1a\x10.sensors.Reading\"\x00\x42\x41Z?github.com/ryanlaycock/smart-home/smart-home-api/protos/sensorsb\x06proto3'
+  serialized_pb=b'\n\x14protos/sensors.proto\x12\x07sensors\"\x18\n\x07Reading\x12\r\n\x05value\x18\x01 \x01(\x01\"\x1e\n\nTempSensor\x12\x10\n\x08sensorId\x18\x01 \x01(\t2=\n\x06Sensor\x12\x33\n\x08ReadTemp\x12\x13.sensors.TempSensor\x1a\x10.sensors.Reading\"\x00\x42\x41Z?github.com/ryanlaycock/smart-home/smart-home-api/protos/sensorsb\x06proto3'
 )
 
 
@@ -57,14 +57,21 @@ _READING = _descriptor.Descriptor(
 )
 
 
-_READPARAMS = _descriptor.Descriptor(
-  name='ReadParams',
-  full_name='sensors.ReadParams',
+_TEMPSENSOR = _descriptor.Descriptor(
+  name='TempSensor',
+  full_name='sensors.TempSensor',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='sensorId', full_name='sensors.TempSensor.sensorId', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -78,11 +85,11 @@ _READPARAMS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=59,
-  serialized_end=71,
+  serialized_end=89,
 )
 
 DESCRIPTOR.message_types_by_name['Reading'] = _READING
-DESCRIPTOR.message_types_by_name['ReadParams'] = _READPARAMS
+DESCRIPTOR.message_types_by_name['TempSensor'] = _TEMPSENSOR
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Reading = _reflection.GeneratedProtocolMessageType('Reading', (_message.Message,), {
@@ -92,12 +99,12 @@ Reading = _reflection.GeneratedProtocolMessageType('Reading', (_message.Message,
   })
 _sym_db.RegisterMessage(Reading)
 
-ReadParams = _reflection.GeneratedProtocolMessageType('ReadParams', (_message.Message,), {
-  'DESCRIPTOR' : _READPARAMS,
+TempSensor = _reflection.GeneratedProtocolMessageType('TempSensor', (_message.Message,), {
+  'DESCRIPTOR' : _TEMPSENSOR,
   '__module__' : 'protos.sensors_pb2'
-  # @@protoc_insertion_point(class_scope:sensors.ReadParams)
+  # @@protoc_insertion_point(class_scope:sensors.TempSensor)
   })
-_sym_db.RegisterMessage(ReadParams)
+_sym_db.RegisterMessage(TempSensor)
 
 
 DESCRIPTOR._options = None
@@ -109,15 +116,15 @@ _SENSOR = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=73,
-  serialized_end=130,
+  serialized_start=91,
+  serialized_end=152,
   methods=[
   _descriptor.MethodDescriptor(
-    name='Read',
-    full_name='sensors.Sensor.Read',
+    name='ReadTemp',
+    full_name='sensors.Sensor.ReadTemp',
     index=0,
     containing_service=None,
-    input_type=_READPARAMS,
+    input_type=_TEMPSENSOR,
     output_type=_READING,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
